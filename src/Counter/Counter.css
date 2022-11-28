@@ -1,0 +1,18 @@
+.Counter {
+  border: 1px solid black;
+  width: 400px;
+  height: 200px;
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.Counter__value {
+  margin-left: 50%;
+  margin-top: 50px;
+  font-size: 30px;
+}
+
+.Counter__controls {
+  margin-left: 95px;
+  margin-top: 50px;
+}
