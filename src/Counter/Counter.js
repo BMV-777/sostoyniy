@@ -32,6 +32,8 @@ class Counter extends React.Component {
   };
 
   render() {
+    // const { value } = this.state;
+
     return (
       <div className="Counter">
         <span className="Counter__value">{this.state.value}</span>

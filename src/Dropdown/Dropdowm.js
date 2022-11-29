@@ -1,10 +1,43 @@
-import React, {Component} from 'react';
-
+import React, { Component } from 'react';
+import './Dropdown.css';
 
 class Dropdown extends Component {
-  render();
-  return(
-    <div className
-    
-  )
+  state = {
+    visible: false,
+  };
+
+  toggle = () => {
+    this.setState(prevState => ({ visible: !prevState.visible }));
+  };
+
+  // show = () => {
+  //   this.setState({ visible: true });
+  // };
+
+  // hid = () => {
+  //   this.setState({ visible: false });
+  // };
+
+  render() {
+    return (
+      <div className="Dropdown">
+        <button
+          type="button"
+          className="Dropdown__toggle"
+          onClick={this.toggle}
+        >
+          {this.state.visible ? 'Скрыть' : 'Показать'}
+        </button>
+        {/* <button type="button" className="Dropdown__toggle" onClick={this.hid}>
+          Закрыть
+        </button> */}
+
+        {this.state.visible && (
+          <div className="Dropdown__menu">Выподающее меню</div>
+        )}
+      </div>
+    );
+  }
 }
+
+export default Dropdown;
