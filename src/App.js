@@ -1,9 +1,9 @@
+import { nanoid } from 'nanoid';
+import React, { Component } from 'react';
 // import Counter from './Counter';
 // import Dropdown from './Dropdown';
 import Filter from './Filter/Filter';
-import { nanoid } from 'nanoid';
 import TodoEdition from './TodoEditor/TodoEditor';
-import React, { Component } from 'react';
 // import ColorPicker from './ColorPicker';
 import TodoList from './TuduList/TodoList';
 import initialTodos from './todos.json';
@@ -21,7 +21,7 @@ import './App.css';
 class App extends Component {
   state = {
     todos: initialTodos,
-    filter: '',
+    filter: ' ',
   };
 
   deleteTodo = todoId => {
@@ -50,7 +50,7 @@ class App extends Component {
   // model.id = nanoid()
   addTodo = text => {
     const todo = {
-      id: nanoid(),
+      id: nanoid(4),
       text,
       completed: false,
     };
@@ -64,20 +64,27 @@ class App extends Component {
     this.setState({ filter: e.currentTarget.value });
   };
 
-  normalizedFilter = this.state.filter.toLowerCase();
+  getVisibleTodo = () => {
+    const { todos, filter } = this.state;
 
-  visibleTodos = this.state.todos.filter(todo =>
-    todo.text.toLowerCase().includes(this.normalizedFilter)
-  );
+    const normalizedFilter = filter.toLowerCase();
+
+    return todos.filter(todo =>
+      todo.text.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  calcTodo = () => {
+    const { todos } = this.state;
+
+    return todos.reduce((acc, todo) => (todo.completed ? acc + 1 : acc), 0);
+  };
 
   render() {
     const { todos, filter } = this.state;
-
     const totalTodo = todos.length;
-    const completTodo = todos.reduce(
-      (acc, todo) => (todo.completed ? acc + 1 : acc),
-      0
-    );
+    const completTodo = this.calcTodo();
+    const visibleTodos = this.getVisibleTodo();
 
     return (
       <div>
@@ -86,6 +93,7 @@ class App extends Component {
           <p>Общее колич-во: {totalTodo}</p>
           <p>Количество выполненных:{completTodo} </p>
         </div>
+
         <TodoEdition onSubmit={this.addTodo} />
 
         <Filter value={filter} onChange={this.changFilter} />
@@ -95,7 +103,7 @@ class App extends Component {
         </label> */}
 
         <TodoList
-          todos={todos}
+          todos={visibleTodos}
           onDeleteTodo={this.deleteTodo}
           onToggleCompleted={this.toggleCompleted}
         />
