@@ -2,11 +2,12 @@ import { nanoid } from 'nanoid';
 import React, { Component } from 'react';
 // import Counter from './Counter';
 // import Dropdown from './Dropdown';
-import Filter from './Filter/Filter';
-import TodoEdition from './TodoEditor/TodoEditor';
+// import Filter from './Filter/Filter';
+// import TodoEdition from './TodoEditor/TodoEditor';
 // import ColorPicker from './ColorPicker';
-import TodoList from './TuduList/TodoList';
-import initialTodos from './todos.json';
+// import TodoList from './TuduList/TodoList';
+// import initialTodos from './todos.json';
+import Modal from './Modal/Modal';
 import './App.css';
 
 // const colorPickerOptions = [
@@ -20,8 +21,30 @@ import './App.css';
 
 class App extends Component {
   state = {
-    todos: initialTodos,
-    filter: ' ',
+    // todos: initialTodos,
+    // filter: '',
+    showModal: false,
+  };
+
+  componentDidMount = () => {
+    // console.log('App copmponentDidMount');
+
+    const todos = localStorage.getItem('todos');
+    const parsedTodos = JSON.parse(todos);
+
+    if (parsedTodos) {
+      this.setState({ todos: parsedTodos });
+    }
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    // console.log('App componentDidUpdate');
+
+    if (this.state.todos !== prevState.todos) {
+      console.log('Обновилося поля todos');
+
+      localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    }
   };
 
   deleteTodo = todoId => {
@@ -47,7 +70,7 @@ class App extends Component {
       }),
     }));
   };
-  // model.id = nanoid()
+
   addTodo = text => {
     const todo = {
       id: nanoid(4),
@@ -65,7 +88,7 @@ class App extends Component {
   };
 
   getVisibleTodo = () => {
-    const { todos, filter } = this.state;
+    const { filter, todos } = this.state;
 
     const normalizedFilter = filter.toLowerCase();
 
@@ -80,33 +103,55 @@ class App extends Component {
     return todos.reduce((acc, todo) => (todo.completed ? acc + 1 : acc), 0);
   };
 
+  togglModal = () => {
+    this.setState(state => ({
+      showModal: !state.showModal,
+    }));
+  };
+
   render() {
-    const { todos, filter } = this.state;
-    const totalTodo = todos.length;
-    const completTodo = this.calcTodo();
-    const visibleTodos = this.getVisibleTodo();
+    // console.log('App render');
+    const { showModal } = this.state;
+    // const { todos, filter } = this.state;
+    // const totalTodo = todos.length;
+    // const completTodo = this.calcTodo();
+    // const visibleTodos = this.getVisibleTodo();
 
     return (
       <div>
-        <h1>Состояние компонента </h1>
+        <button type="button" onClick={this.togglModal}>
+          Открыть Модалку Желаний
+        </button>
+        {showModal && (
+          <Modal onClose={this.togglModal}>
+            <h1>Меры придосторожности к успеху!!!</h1>
+            <ul>
+              <li>Трахатся много всех кто нравится!!</li>
+              <li>Пойти на работу и стать успешным программистом!!!</li>
+              <li>Добится в IT Высокой зарплаты и статуса!!!</li>
+              <li>И зделать это очень быстро!!!</li>
+            </ul>
+            <button type="button" onClick={this.togglModal}>
+              Закрыть Модалку Желаний
+            </button>
+          </Modal>
+        )}
+        {/* <h1>Состояние компонента </h1>
         <div>
           <p>Общее колич-во: {totalTodo}</p>
           <p>Количество выполненных:{completTodo} </p>
         </div>
-
         <TodoEdition onSubmit={this.addTodo} />
-
-        <Filter value={filter} onChange={this.changFilter} />
+        <Filter value={filter} onChange={this.changFilter} /> */}
         {/* <label>
           Фильтер по имени
           <input type="text" value={filter} onChange={this.changFilter} />
         </label> */}
-
-        <TodoList
+        {/* <TodoList
           todos={visibleTodos}
           onDeleteTodo={this.deleteTodo}
           onToggleCompleted={this.toggleCompleted}
-        />
+        /> */}
         {/* <ColorPicker options={colorPickerOptions} /> */}
         {/* <Counter initValue={7} /> */}
         {/* <Dropdown /> */}
