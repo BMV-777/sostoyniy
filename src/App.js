@@ -2,13 +2,19 @@ import { nanoid } from 'nanoid';
 import React, { Component } from 'react';
 // import Counter from './Counter';
 // import Dropdown from './Dropdown';
-// import Filter from './Filter/Filter';
-// import TodoEdition from './TodoEditor/TodoEditor';
+import Filter from './Filter/Filter';
+import TodoEdition from './TodoEditor/TodoEditor';
 // import ColorPicker from './ColorPicker';
-// import TodoList from './TuduList/TodoList';
-// import initialTodos from './todos.json';
+import TodoList from './TuduList/TodoList';
+import initialTodos from './todos.json';
 import Modal from './Modal/Modal';
+import { ReactComponent as AddIcon } from './Icons/bmw-logo.svg';
+
+// import Tabs from './Tabs/Tabs';
+// import items from './tabs.json';
+// import Clock from './Clock/Clock';
 import './App.css';
+import IconButton from './IconButton/IconButton';
 
 // const colorPickerOptions = [
 //   { label: 'red', color: '#F44336' },
@@ -21,8 +27,8 @@ import './App.css';
 
 class App extends Component {
   state = {
-    // todos: initialTodos,
-    // filter: '',
+    todos: initialTodos,
+    filter: '',
     showModal: false,
   };
 
@@ -54,12 +60,12 @@ class App extends Component {
   };
 
   toggleCompleted = todoId => {
-    console.log('todoId');
+    // console.log('todoId');
 
     this.setState(prevState => ({
       todos: prevState.todos.map(todo => {
         if (todo.id === todoId) {
-          console.log('Нашли тот туду который нужно!');
+          // console.log('Нашли тот туду который нужно!');
           return {
             ...todo,
             completed: !todo.completed,
@@ -112,16 +118,18 @@ class App extends Component {
   render() {
     // console.log('App render');
     const { showModal } = this.state;
-    // const { todos, filter } = this.state;
-    // const totalTodo = todos.length;
-    // const completTodo = this.calcTodo();
-    // const visibleTodos = this.getVisibleTodo();
+    const { todos, filter } = this.state;
+    const totalTodo = todos.length;
+    const completTodo = this.calcTodo();
+    const visibleTodos = this.getVisibleTodo();
 
     return (
       <div>
-        <button type="button" onClick={this.togglModal}>
-          Открыть Модалку Желаний
-        </button>
+        <IconButton onClick={this.togglModal} aria-label="Добавить todo">
+          <AddIcon height="140" width="140" fill="blue" />
+        </IconButton>
+        {/* <Tabs items={items} /> */}
+        <button type="button"></button>
         {showModal && (
           <Modal onClose={this.togglModal}>
             <h1>Меры придосторожности к успеху!!!</h1>
@@ -136,22 +144,22 @@ class App extends Component {
             </button>
           </Modal>
         )}
-        {/* <h1>Состояние компонента </h1>
+        <h1>Состояние компонента </h1>
         <div>
           <p>Общее колич-во: {totalTodo}</p>
           <p>Количество выполненных:{completTodo} </p>
         </div>
         <TodoEdition onSubmit={this.addTodo} />
-        <Filter value={filter} onChange={this.changFilter} /> */}
+        <Filter value={filter} onChange={this.changFilter} />
         {/* <label>
           Фильтер по имени
           <input type="text" value={filter} onChange={this.changFilter} />
         </label> */}
-        {/* <TodoList
+        <TodoList
           todos={visibleTodos}
           onDeleteTodo={this.deleteTodo}
           onToggleCompleted={this.toggleCompleted}
-        /> */}
+        />
         {/* <ColorPicker options={colorPickerOptions} /> */}
         {/* <Counter initValue={7} /> */}
         {/* <Dropdown /> */}
